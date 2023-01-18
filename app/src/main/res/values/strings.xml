@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Tic-Tac-Toe with AI</string>
+    <string name="reset">Reset</string>
+    <string name="draw_message">Draw,try again!</string>
+    <string name="player_win_message">You win!</string>
+    <string name="ai_win_message">AI win!</string>
+    <string name="image">image</string>
+    <string name="buy">Buy</string>
+
+    <string name="facebook_app_id">1234</string>
+    <string name="facebook_client_token">56789</string>
+</resources>

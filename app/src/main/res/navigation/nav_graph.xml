@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/initialScreenFragment">
+
+    <fragment
+        android:id="@+id/initialScreenFragment"
+        android:name="com.arnold.tic_tac_toewithai.ui.fragments.InitialScreenFragment"
+        android:label="fragment_initial_screen"
+        tools:layout="@layout/fragment_initial_screen" >
+        <action
+            android:id="@+id/action_initialScreenFragment_to_fragment_grid"
+            app:destination="@id/fragment_grid" />
+        <action
+            android:id="@+id/action_initialScreenFragment_to_shopFragment"
+            app:destination="@id/shopFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/shopFragment"
+        android:name="com.arnold.tic_tac_toewithai.ui.fragments.ShopFragment"
+        android:label="fragment_shop"
+        tools:layout="@layout/fragment_shop" />
+    <fragment
+        android:id="@+id/fragment_grid"
+        android:name="com.arnold.tic_tac_toewithai.ui.fragments.GridFragment"
+        android:label="fragment_grid"
+        tools:layout="@layout/fragment_grid" />
+</navigation>
