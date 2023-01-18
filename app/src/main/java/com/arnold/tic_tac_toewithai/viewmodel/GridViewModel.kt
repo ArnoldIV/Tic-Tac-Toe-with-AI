@@ -1,32 +1,46 @@
 package com.arnold.tic_tac_toewithai.viewmodel
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.arnold.tic_tac_toewithai.AmountOfMoney
 import com.arnold.tic_tac_toewithai.DataStoreRepository
 import com.arnold.tic_tac_toewithai.models.Cells
 import com.arnold.tic_tac_toewithai.models.CellsState
 import com.arnold.tic_tac_toewithai.models.Grid
 import com.arnold.tic_tac_toewithai.models.GridState
+import com.arnold.tic_tac_toewithai.util.Constants.Companion.DEFAULT_AMOUNT_OF_MONEY
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class GridViewModel : ViewModel() {
-    //(val dataStoreRepository: DataStoreRepository)
+@HiltViewModel
+class GridViewModel @Inject constructor(
+    application: Application,
+    private val dataStoreRepository: DataStoreRepository)
+    : AndroidViewModel(application) {
+
     private val mainGrid = Grid()
-    var amountOfMoney = 0
-     val grid = MutableLiveData(mainGrid)
-    val money = MutableLiveData(amountOfMoney)
+    private var amountOfMoney = 0
+    val grid = MutableLiveData(mainGrid)
 
-    //val readAmountOfMoney = dataStoreRepository.readAmountOfMoney
+     val readAmountOfMoney = dataStoreRepository.readAmountOfMoney
 
-   // fun saveAmoutOfMoney(money: Int) = viewModelScope.launch(Dispatchers.IO){
-        //dataStoreRepository.saveAmountOfMoney(money)
-   // }
+
+
+
+
+    fun saveAmountOfMoney(amountOfMoney: Int) = viewModelScope.launch(Dispatchers.IO){
+        dataStoreRepository.saveAmountOfMoney(amountOfMoney)
+    }
+
+
 
     private fun updateBoard() {
         grid.value = mainGrid
-        money.value = amountOfMoney
+
     }
 
     fun cellClicked(cell: Cells) {
@@ -59,6 +73,7 @@ class GridViewModel : ViewModel() {
     }
 
     fun resetGrid() {
+        //saveAmountOfMoney(amountOfMoney)
         mainGrid.resetGrid()
         updateBoard()
     }

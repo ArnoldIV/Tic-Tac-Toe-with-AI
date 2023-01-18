@@ -10,7 +10,9 @@ import com.arnold.tic_tac_toewithai.R
 import com.arnold.tic_tac_toewithai.util.Constants.Companion.APPSFLYER_APP_ID
 import com.arnold.tic_tac_toewithai.util.Constants.Companion.ONESIGNAL_APP_ID
 import com.onesignal.OneSignal
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var navController: NavController

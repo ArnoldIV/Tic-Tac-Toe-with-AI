@@ -10,14 +10,18 @@ import androidx.datastore.preferences.preferencesDataStore
 import com.arnold.tic_tac_toewithai.util.Constants.Companion.DEFAULT_AMOUNT_OF_MONEY
 import com.arnold.tic_tac_toewithai.util.Constants.Companion.PREFERENCES_AMOUNT_OF_MONEY
 import com.arnold.tic_tac_toewithai.util.Constants.Companion.PREFERENCES_NAME
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.android.scopes.ActivityRetainedScoped
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import java.io.IOException
+import javax.inject.Inject
 
 private val Context.dataStore by preferencesDataStore(PREFERENCES_NAME)
 
-class DataStoreRepository(context: Context) {
+@ActivityRetainedScoped
+class DataStoreRepository @Inject constructor(@ApplicationContext private val context: Context) {
 
     private object PreferencesKeys {
         val amountOfMoney = intPreferencesKey(PREFERENCES_AMOUNT_OF_MONEY)
@@ -40,8 +44,7 @@ class DataStoreRepository(context: Context) {
             }
         }
         .map { preferences ->
-            val money = preferences[PreferencesKeys.amountOfMoney] ?:
-            DEFAULT_AMOUNT_OF_MONEY
+            val money = preferences[PreferencesKeys.amountOfMoney]
             AmountOfMoney(
                 money as Int
             )

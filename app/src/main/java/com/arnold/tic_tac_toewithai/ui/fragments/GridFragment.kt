@@ -7,12 +7,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
 import com.arnold.tic_tac_toewithai.viewmodel.GridViewModel
 import com.arnold.tic_tac_toewithai.R
 import com.arnold.tic_tac_toewithai.databinding.FragmentGridBinding
 import com.arnold.tic_tac_toewithai.models.Grid
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.asLiveData
 import com.arnold.tic_tac_toewithai.models.Cells
 import com.arnold.tic_tac_toewithai.models.GridState
 
@@ -21,8 +22,13 @@ class GridFragment : Fragment(R.layout.fragment_grid) {
 
     private var _binding: FragmentGridBinding? = null
     private val binding get() = _binding!!
-    val viewModel: GridViewModel by viewModels()
-    var amountOfMoney:Int = 0
+    private lateinit var viewModel: GridViewModel
+    var amountOfMoney = 0
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = ViewModelProvider(requireActivity())[GridViewModel::class.java]
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,6 +36,13 @@ class GridFragment : Fragment(R.layout.fragment_grid) {
     ): View {
         _binding = FragmentGridBinding.inflate(inflater, container, false)
         viewModel.grid.observe(viewLifecycleOwner, onGridChange)
+
+
+        viewModel.readAmountOfMoney.asLiveData().observe(viewLifecycleOwner){value ->
+            amountOfMoney = value.money
+            binding.amountOfMoneyTextView.text = value.money.toString()
+            Log.d("valuemoney", amountOfMoney.toString())
+        }
 
         bindButtons()
         return binding.root
@@ -50,8 +63,6 @@ class GridFragment : Fragment(R.layout.fragment_grid) {
         binding.square6.setImageResource(grid.getState(Cells.BOTTOM_LEFT).res)
         binding.square7.setImageResource(grid.getState(Cells.BOTTOM_CENTER).res)
         binding.square8.setImageResource(grid.getState(Cells.BOTTOM_RIGHT).res)
-        Log.d("money", amountOfMoney.toString())
-        binding.amountOfMoneyTextView.text = amountOfMoney.toString()
     }
 
 
@@ -60,16 +71,20 @@ class GridFragment : Fragment(R.layout.fragment_grid) {
             setupBoard(true)
             binding.gameResultTextView.visibility = View.VISIBLE
             binding.gameResultTextView.setText(R.string.ai_win_message)
+            amountOfMoney += 0
         }
         GridState.PLAYER_WIN -> {
             setupBoard(true)
             amountOfMoney += 10
+            viewModel.saveAmountOfMoney(amountOfMoney)
             binding.gameResultTextView.visibility = View.VISIBLE
             binding.gameResultTextView.setText(R.string.player_win_message)
+
         }
         GridState.DRAW -> {
             setupBoard(true)
             amountOfMoney += 2
+            viewModel.saveAmountOfMoney(amountOfMoney)
             binding.gameResultTextView.visibility = View.VISIBLE
             binding.gameResultTextView.setText(R.string.draw_message)
         }
@@ -103,7 +118,8 @@ class GridFragment : Fragment(R.layout.fragment_grid) {
 
     fun bindButtons() {
         with(binding) {
-            buttonReset.setOnClickListener { viewModel.resetGrid() }
+            buttonReset.setOnClickListener {
+                viewModel.resetGrid() }
             square0.setOnClickListener { viewModel.cellClicked(Cells.TOP_LEFT) }
             square1.setOnClickListener { viewModel.cellClicked(Cells.TOP_CENTER) }
             square2.setOnClickListener { viewModel.cellClicked(Cells.TOP_RIGHT) }
