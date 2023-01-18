@@ -1,6 +1,7 @@
 package com.arnold.tic_tac_toewithai.ui.fragments
 
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -18,7 +19,7 @@ import com.arnold.tic_tac_toewithai.models.Cells
 import com.arnold.tic_tac_toewithai.models.GridState
 
 
-class GridFragment : Fragment(R.layout.fragment_grid) {
+open class GridFragment : Fragment(R.layout.fragment_grid) {
 
     private var _binding: FragmentGridBinding? = null
     private val binding get() = _binding!!
@@ -131,6 +132,19 @@ class GridFragment : Fragment(R.layout.fragment_grid) {
             square8.setOnClickListener { viewModel.cellClicked(Cells.BOTTOM_RIGHT) }
         }
 
+    }
+
+    @SuppressLint("ResourceAsColor")
+    fun changeColorToRed(){
+        binding.square0.setBackgroundColor(R.color.red)
+        binding.square1.setBackgroundColor(R.color.red)
+        binding.square2.setBackgroundColor(R.color.red)
+        binding.square3.setBackgroundColor(R.color.red)
+        binding.square4.setBackgroundColor(R.color.red)
+        binding.square5.setBackgroundColor(R.color.red)
+        binding.square6.setBackgroundColor(R.color.red)
+        binding.square7.setBackgroundColor(R.color.red)
+        binding.square8.setBackgroundColor(R.color.red)
     }
 
 }
